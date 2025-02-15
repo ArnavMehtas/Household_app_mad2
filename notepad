@@ -1,0 +1,106 @@
+Entities and Relationships
+
+
+Admin
+
+    admin_name
+    admin_password
+
+    Note: Admin is a superuser, so no relationships with other tables are needed directly, as their actions are global across all users.
+
+
+Client (Customer)
+
+    client_id (Primary Key)
+    client_name
+    client_password
+    client_address (optional, for location-based search)
+    client_phone (optional)
+
+
+    Relationships:
+
+    A client can create multiple Service Requests.
+
+
+
+
+Professional
+
+    professional_id (Primary Key)
+    professional_name
+    professional_password
+    professional_date_created
+    professional_description
+    professional_service_type (Foreign Key to Service)
+    professional_experience
+    professional_rating (Calculated from reviews)
+
+
+    Relationships:
+
+    Each professional provides a specific Service.
+    A professional can handle multiple Service Requests.
+    Each professional can be reviewed by customers based on completed services.
+
+
+
+Service
+
+    service_id (Primary Key)
+    service_name
+    service_price
+    service_description
+    service_time_required
+
+
+
+    Relationships:
+
+    Services are requested by Clients.
+    Professionals are assigned to a specific service category, defined by service_id.
+
+
+
+Service Request
+
+    service_request_id (Primary Key)
+    service_id (Foreign Key to Service)
+    client_id (Foreign Key to Client)
+    professional_id (Foreign Key to Professional)
+    service_request_date_of_request
+    service_request_date_of_completion
+    service_request_status (requested/assigned/closed)
+    service_request_remarks
+
+
+    Relationships:
+
+    Each request is linked to one Service.
+    The request is created by a Client.
+    The request is fulfilled by a Professional.
+
+
+Review
+
+    review_id (Primary Key)
+    service_request_id (Foreign Key to Service Request)
+    professional_id (Foreign Key to Professional)
+    client_id (Foreign Key to Client)
+    review_rating (1-5)
+    review_comment
+
+
+
+    Relationships:
+
+    Linked to a Service Request (once completed).
+    A Client reviews a Professional after the service is completed.
+
+
+
+
+Client → Service Request (One-to-Many)
+Service → Service Request (One-to-Many)
+Professional → Service (Many-to-One)
+Client ←→ Professional (Many-to-Many via Service Request)
